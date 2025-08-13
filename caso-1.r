@@ -1,7 +1,1 @@
-uuuuu
-
-
-ddds
-
-
-sdsfff
+mean(x, na.rm=FALSE)
