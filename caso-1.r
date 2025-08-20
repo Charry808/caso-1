@@ -9,4 +9,4 @@ library(moments)
 setwd("/Users/manuelagranadoshernandez/Documents/GitHub/caso-1/")
 cost_path <- "hoja1caso.csv"
 read.csv(caso_path)
-ya 
+
