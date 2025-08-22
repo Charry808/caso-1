@@ -9,12 +9,11 @@ library(moments)
 setwd("/Users/manuelagranadoshernandez/Documents/GitHub/caso-1/")
 cost_path <- "hoja1caso.csv"
 read.csv(caso_path)
+# Instalar y cargar paquetes necesarios
+packages <- c("tidyverse","lubridate","janitor","readr")
 to_install <- setdiff(packages, rownames(installed.packages()))
 if (length(to_install)) install.packages(to_install, dependencies = TRUE)
 invisible(lapply(packages, library, character.only = TRUE))
-weekly <- readr::read_csv("hoja_1_caso.csv") |> janitor::clean_names()
-financials <- readr::read_delim("hoja_2_caso.csv", delim = ";") |> janitor::clean_names()
-lbs_long <- readr::read_delim("hoja_3_caso.csv", delim = ";") |> janitor::clean_names()
 
 parse_week <- function(x) lubridate::mdy(x)
 weekly <- weekly |>
@@ -34,7 +33,7 @@ weekly <- weekly |>
   df <- weekly |>
   inner_join(financials, by = "week") |>
   arrange(week)
-  bp <- strucchange::breakpoints(visits ~ 1, data = df, breaks = 3) # 3 quiebres → 4 periodos
+  bp <- strucchange::breakpoints(visits ~ 1, data = df, breaks = 3) 
 cuts_idx <- bp$breakpoints
 if (sum(!is.na(cuts_idx)) == 3) {
   brks <- c(0, cuts_idx, nrow(df))
