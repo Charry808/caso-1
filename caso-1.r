@@ -7,10 +7,20 @@ library(lubridate)
 install.packages("moments")
 library(moments)
 setwd("/Users/manuelagranadoshernandez/Documents/GitHub/caso-1/")
-cost_path <- "hoja1caso.csv"
-read.csv(caso_path)
+weekly <- read_csv("hoja_1_caso.csv") |> janitor::clean_names()
+glimpse(weekly)
+financials <- read_csv("hoja_2_caso.csv") |> janitor::clean_names()
+glimpse(financials)
+df <- weekly |>
+  mutate(week = mdy(week_2008_2009)) |>
+  inner_join(
+    financials |> mutate(week = mdy(week_2008_2009)),
+    by = "week"
+  )
+
 # Instalar y cargar paquetes necesarios
 packages <- c("tidyverse","lubridate","janitor","readr")
+
 to_install <- setdiff(packages, rownames(installed.packages()))
 if (length(to_install)) install.packages(to_install, dependencies = TRUE)
 invisible(lapply(packages, library, character.only = TRUE))
@@ -27,6 +37,13 @@ invisible(lapply(packages, library, character.only = TRUE))
 
 library(dplyr)
 library(stringr)
+df <- df |>
+  mutate(period = case_when(
+    week <= as.Date("2008-08-02") ~ "Initial",
+    week <= as.Date("2008-12-20") ~ "Pre-Promo",
+    week <= as.Date("2009-03-07") ~ "Promotion",
+    TRUE ~ "Post-Promo"
+  ))
 
 # --- Paso 1: Crear datos de ejemplo ---
 
